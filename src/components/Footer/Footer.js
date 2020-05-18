@@ -11,7 +11,7 @@ const Footer = props => {
 
   return (
     <div className={classes.footer}>
-      <span>Copyright Nerd Party &copy; {new Date().getFullYear()}</span>
+      <span>Copyright Matt Gaddes &copy; {new Date().getFullYear()}</span>
     </div>
   );
 };

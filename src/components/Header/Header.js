@@ -25,8 +25,7 @@ const Header = (props) => {
         <div className={classes.container}>
           <Link to="/">
             <Typography variant="h6" className={classes.title}>
-              <span>Dietitian </span>
-              <span role='img' aria-label='avocado'>🥑</span>
+              <span>Weekly</span>
             </Typography>
           </Link>
 

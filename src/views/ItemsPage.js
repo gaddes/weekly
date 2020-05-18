@@ -1,20 +1,20 @@
 import React from 'react';
 import { createUseStyles } from 'react-jss';
 
-import { About } from '../components';
+import { Items } from '../components';
 import globalStyles from '../helpers/globalStyles';
 
 const useStyles = createUseStyles(globalStyles);
 
 
-const AboutPage = props => {
+const ItemsPage = props => {
   const classes = useStyles();
 
   return (
     <div className={classes.container}>
-      <About />
+      <Items />
     </div>
   );
 };
 
-export default AboutPage;
+export default ItemsPage;

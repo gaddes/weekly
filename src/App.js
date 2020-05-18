@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { createUseStyles } from 'react-jss';
 
-import { AboutPage, HomePage, LoginPage } from './views';
+import { ItemsPage, HomePage, LoginPage } from './views';
 import { Header, Footer } from './components';
 import stylesheet from './stylesheet';
 
@@ -23,8 +23,8 @@ export default function App() {
           <Route path='/login'>
             <LoginPage />
           </Route>
-          <Route path='/about'>
-            <AboutPage />
+          <Route path='/items'>
+            <ItemsPage />
           </Route>
         </Switch>
         <Footer />

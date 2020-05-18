@@ -31,7 +31,7 @@ const Header = (props) => {
 
           {!isSmallScreen &&
             <div>
-              <Link to="/about">About</Link>
+              <Link to="/items">Items</Link>
               <Link to="/login">Login</Link>
             </div>
           }

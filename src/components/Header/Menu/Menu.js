@@ -25,9 +25,9 @@ const SwipeableMenu = props => {
       role="presentation"
     >
       <List>
-        <ListItem button key='about' onClick={() => setIsOpen(false)}>
-          <Link to="/about">
-            <ListItemText primary='About' />
+        <ListItem button key='items' onClick={() => setIsOpen(false)}>
+          <Link to="/items">
+            <ListItemText primary='Items' />
           </Link>
         </ListItem>
 

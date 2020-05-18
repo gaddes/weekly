@@ -32,8 +32,7 @@ const Header = (props) => {
           {!isSmallScreen &&
             <div>
               <Link to="/about">About</Link>
-              <Link to="/where">Where</Link>
-              <Link to="/when">When</Link>
+              <Link to="/login">Login</Link>
             </div>
           }
 

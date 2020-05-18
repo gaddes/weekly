@@ -1,20 +1,20 @@
 import React from 'react';
 import { createUseStyles } from 'react-jss';
 
-import { Where } from '../components';
+import { Login } from '../components';
 import globalStyles from '../helpers/globalStyles';
 
 const useStyles = createUseStyles(globalStyles);
 
 
-const WherePage = props => {
+const LoginPage = props => {
   const classes = useStyles();
 
   return (
     <div className={classes.container}>
-      <Where />
+      <Login />
     </div>
   );
 };
 
-export default WherePage;
+export default LoginPage;

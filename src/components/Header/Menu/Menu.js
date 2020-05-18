@@ -4,11 +4,7 @@ import { createUseStyles } from 'react-jss';
 import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import PlaceIcon from '@material-ui/icons/Place';
-import InfoIcon from '@material-ui/icons/Info';
-import AlarmIcon from '@material-ui/icons/Alarm';
 import MenuIcon from '@material-ui/icons/Menu';
 import IconButton from '@material-ui/core/IconButton';
 
@@ -30,23 +26,14 @@ const SwipeableMenu = props => {
     >
       <List>
         <ListItem button key='about' onClick={() => setIsOpen(false)}>
-          <ListItemIcon><InfoIcon /></ListItemIcon>
           <Link to="/about">
             <ListItemText primary='About' />
           </Link>
         </ListItem>
 
-        <ListItem button key='where' onClick={() => setIsOpen(false)}>
-          <ListItemIcon><PlaceIcon /></ListItemIcon>
-          <Link to="/where">
-            <ListItemText primary='Where' />
-          </Link>
-        </ListItem>
-
-        <ListItem button key='when' onClick={() => setIsOpen(false)}>
-          <ListItemIcon><AlarmIcon /></ListItemIcon>
-          <Link to="/when">
-            <ListItemText primary='When' />
+        <ListItem button key='login' onClick={() => setIsOpen(false)}>
+          <Link to="/login">
+            <ListItemText primary='Login' />
           </Link>
         </ListItem>
       </List>

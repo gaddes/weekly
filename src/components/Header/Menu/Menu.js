@@ -36,6 +36,12 @@ const SwipeableMenu = props => {
             <ListItemText primary='Login' />
           </Link>
         </ListItem>
+
+        <ListItem button key='signup' onClick={() => setIsOpen(false)}>
+          <Link to="/signup">
+            <ListItemText primary='Sign Up' />
+          </Link>
+        </ListItem>
       </List>
     </div>
   );

@@ -4,7 +4,7 @@ Project hosted on [Netlify](https://app.netlify.com/)
 
 ### MASTER branch
 
-All code merged to MASTER branch will be automatically built and available for viewing (after a couple of minutes) at [link here]
+All code merged to MASTER branch will be automatically built and available for viewing (after a couple of minutes) at https://focused-payne-5593e1.netlify.app/
 
 ### DEVELOP branch
 

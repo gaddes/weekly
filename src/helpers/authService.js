@@ -1,7 +1,11 @@
 // This file contains functions used to sign up
 //  and sign in using AWS Cognito
 
-import { CognitoUserPool, CognitoUserAttribute } from 'amazon-cognito-identity-js';
+import {
+  CognitoUserPool,
+  CognitoUserAttribute,
+  CognitoUser,
+} from 'amazon-cognito-identity-js';
 
 const POOL_DATA = {
   UserPoolId: 'us-east-1_D6X8kXmMV',
@@ -32,6 +36,24 @@ export const signUp = data => {
       return;
     }
     const { user } = result;
-    console.log(`New user signed up successfully! User name is '${user.getUsername()}'`);
+    console.log(`New user "${user.getUsername()}" signed up successfully`);
   });
+};
+
+export async function verifyUser(data) {
+  const { username, code } = data;
+  const userData = {
+    Username: username,
+    Pool: userPool,
+  };
+  const cognitoUser = new CognitoUser(userData);
+
+  const apiCall = new Promise((resolve, reject) => {
+    cognitoUser.confirmRegistration(code, true, (err) => {
+      if (err) return reject('AWS Cognito error - User cannot be verified');
+      return resolve(`User "${username}" has been successfully verified`);
+    });
+  });
+
+  return await apiCall;
 };

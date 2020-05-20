@@ -3,6 +3,8 @@ import { createUseStyles } from 'react-jss';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 
+import { signUp } from '../../../helpers/authService';
+
 import Content from '../Content';
 import { Input } from '../../Input';
 import stylesheet from './stylesheet';
@@ -27,13 +29,9 @@ const SignUp = props => {
     validationSchema: schema
   });
 
-  const onSubmit = data => {
-    console.log('data', data);
-  };
-
   return (
     <Content title="Sign Up">
-      <form className={classes.form} onSubmit={handleSubmit(onSubmit)}>
+      <form className={classes.form} onSubmit={handleSubmit(signUp)}>
         <Input
           innerRef={register}
           name="username"

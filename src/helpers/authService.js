@@ -5,6 +5,7 @@ import {
   CognitoUserPool,
   CognitoUserAttribute,
   CognitoUser,
+  AuthenticationDetails,
 } from 'amazon-cognito-identity-js';
 
 const POOL_DATA = {
@@ -52,6 +53,35 @@ export async function verifyUser(data) {
     cognitoUser.confirmRegistration(code, true, (err) => {
       if (err) return reject('AWS Cognito error - User cannot be verified');
       return resolve(`User "${username}" has been successfully verified`);
+    });
+  });
+
+  return await apiCall;
+};
+
+export async function signIn(data) {
+  const { username, password } = data;
+
+  const authData = {
+    Username: username,
+    Password: password,
+  };
+  const authDetails = new AuthenticationDetails(authData);
+
+  const userData = {
+    Username: username,
+    Pool: userPool,
+  };
+  const cognitoUser = new CognitoUser(userData);
+
+  const apiCall = new Promise((resolve, reject) => {
+    cognitoUser.authenticateUser(authDetails, {
+      onSuccess(result) {
+        resolve('Authentication success');
+      },
+      onFailure(error) {
+        reject('Authentication failed');
+      },
     });
   });
 

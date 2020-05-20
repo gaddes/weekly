@@ -87,3 +87,14 @@ export async function signIn(data) {
 
   return await apiCall;
 };
+
+// Get details for current logged-in user
+export const getAuthenticatedUser = () => {
+  return userPool.getCurrentUser();
+};
+
+// Sign user out and delete the current tokens.
+// User must sign in again if they want to continue their session.
+export const logout = () => {
+  getAuthenticatedUser().signOut();
+};

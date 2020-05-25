@@ -8,12 +8,28 @@ import {
   AuthenticationDetails,
 } from 'amazon-cognito-identity-js';
 
+import { createUser } from './requests';
+
 const POOL_DATA = {
   UserPoolId: 'us-east-1_D6X8kXmMV',
   ClientId: '6r0ibsjru76njil1rtsp12v7qv',
 };
 
 const userPool = new CognitoUserPool(POOL_DATA);
+
+// Get details for current logged-in user
+export const getAuthenticatedUser = () => {
+  return userPool.getCurrentUser();
+};
+
+const getAuthorizationHeaders = () => {
+  getAuthenticatedUser().getSession((err, session) => {
+    if (err) return {};
+    return {
+      'Authorization': session.getIdToken().getJwtToken()
+    };
+  });
+};
 
 export const signUp = data => {
   const { username, email, password } = data;
@@ -41,7 +57,7 @@ export const signUp = data => {
   });
 };
 
-export async function verifyUser(data) {
+export const verifyUser = async data => {
   const { username, code } = data;
   const userData = {
     Username: username,
@@ -49,17 +65,34 @@ export async function verifyUser(data) {
   };
   const cognitoUser = new CognitoUser(userData);
 
+  // Wrap AWS method in Promise so we can decide when to resolve/reject
   const apiCall = new Promise((resolve, reject) => {
     cognitoUser.confirmRegistration(code, true, (err) => {
       if (err) return reject('AWS Cognito error - User cannot be verified');
-      return resolve(`User "${username}" has been successfully verified`);
+
+      const data = { id: username };
+      return resolve({
+        data,
+        message: `User "${username}" has been successfully verified`
+      });
     });
   });
 
   return await apiCall;
+}
+
+export const addUserToDatabase = async data => {
+  try {
+    const response = await createUser(data);
+    console.log(`User "${data.id}" has been added to database`);
+    return response;
+  } catch (err) {
+    console.error(err);
+    throw new Error(err);
+  }
 };
 
-export async function signIn(data) {
+export const signIn = async data => {
   const { username, password } = data;
 
   const authData = {
@@ -86,11 +119,6 @@ export async function signIn(data) {
   });
 
   return await apiCall;
-};
-
-// Get details for current logged-in user
-export const getAuthenticatedUser = () => {
-  return userPool.getCurrentUser();
 };
 
 // Sign user out and delete the current tokens.

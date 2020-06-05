@@ -11,3 +11,11 @@ export const createUser = async payload => {
     throw new Error(err);
   }
 };
+
+export const getUserData = async payload => {
+  try {
+    return await axios.get(url, payload);
+  } catch (err) {
+    throw new Error(err);
+  }
+};

@@ -22,8 +22,10 @@ export const getAuthenticatedUser = () => {
   return userPool.getCurrentUser();
 };
 
-const getAuthorizationHeaders = () => {
-  getAuthenticatedUser().getSession((err, session) => {
+// Get headers for currently logged-in user; this allows us to make
+//  subsequent API requests without asking the user to log in each time
+export const getAuthorizationHeaders = () => {
+  return getAuthenticatedUser().getSession((err, session) => {
     if (err) return {};
     return {
       'Authorization': session.getIdToken().getJwtToken()
@@ -109,11 +111,17 @@ export const signIn = async data => {
 
   const apiCall = new Promise((resolve, reject) => {
     cognitoUser.authenticateUser(authDetails, {
-      onSuccess(result) {
-        resolve('Authentication success');
+      onSuccess(res) {
+        resolve({
+          message: 'Authentication success',
+          data: res,
+        });
       },
-      onFailure(error) {
-        reject('Authentication failed');
+      onFailure(err) {
+        reject({
+          message: 'Authentication failed',
+          data: err,
+        });
       },
     });
   });

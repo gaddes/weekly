@@ -3,7 +3,8 @@ import { createUseStyles } from 'react-jss';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 
-import { signIn } from '../../../helpers/authService';
+import { signIn, getAuthorizationHeaders } from '../../../helpers/authService';
+import { getUserData } from '../../../helpers/requests';
 
 import Content from '../Content';
 import { Input } from '../../Input';
@@ -27,13 +28,27 @@ const Login = () => {
     validationSchema: schema
   });
 
-  const signInUser = data => {
-    signIn(data)
-      .then(res => {
-        console.log(res);
-        setSignInSuccess(true);
-      })
-      .catch(err => console.error(err));
+  const signInUser = async data => {
+    try {
+      // Get data incl. authentication token
+      const result = await signIn(data);
+      console.log({
+        message: result.message,
+        data: result.data,
+      });
+
+      // TODO: see lecture 100 - add authorizer to API Gateway
+      // Use authentication token to make GET request for user data
+      const headers = getAuthorizationHeaders();
+
+      console.log('headers', headers);
+      // TODO: make GET request to retrieve user's current tasks
+      //  using Cognito authorization headers for security
+
+      setSignInSuccess(true);
+    } catch (err) {
+      console.error(err.message);
+    }
   };
 
   return (

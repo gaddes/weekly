@@ -1,5 +1,4 @@
-// This file contains functions used to sign up
-//  and sign in using AWS Cognito
+// This file contains helpers for use with Cognito
 
 import {
   CognitoUserPool,
@@ -7,8 +6,6 @@ import {
   CognitoUser,
   AuthenticationDetails,
 } from 'amazon-cognito-identity-js';
-
-import { createUser } from './requests';
 
 const POOL_DATA = {
   UserPoolId: 'us-east-1_D6X8kXmMV',
@@ -59,41 +56,6 @@ export const signUp = data => {
   });
 };
 
-export const verifyUser = async data => {
-  const { username, code } = data;
-  const userData = {
-    Username: username,
-    Pool: userPool,
-  };
-  const cognitoUser = new CognitoUser(userData);
-
-  // Wrap AWS method in Promise so we can decide when to resolve/reject
-  const apiCall = new Promise((resolve, reject) => {
-    cognitoUser.confirmRegistration(code, true, (err) => {
-      if (err) return reject('AWS Cognito error - User cannot be verified');
-
-      const data = { id: username };
-      return resolve({
-        data,
-        message: `User "${username}" has been successfully verified`
-      });
-    });
-  });
-
-  return await apiCall;
-}
-
-export const addUserToDatabase = async data => {
-  try {
-    const response = await createUser(data);
-    console.log(`User "${data.id}" has been added to database`);
-    return response;
-  } catch (err) {
-    console.error(err);
-    throw new Error(err);
-  }
-};
-
 export const signIn = async data => {
   const { username, password } = data;
 
@@ -107,10 +69,10 @@ export const signIn = async data => {
     Username: username,
     Pool: userPool,
   };
-  const cognitoUser = new CognitoUser(userData);
+  const user = new CognitoUser(userData);
 
   const apiCall = new Promise((resolve, reject) => {
-    cognitoUser.authenticateUser(authDetails, {
+    user.authenticateUser(authDetails, {
       onSuccess(res) {
         resolve({
           message: 'Authentication success',
@@ -131,6 +93,30 @@ export const signIn = async data => {
 
 // Sign user out and delete the current tokens.
 // User must sign in again if they want to continue their session.
-export const logout = () => {
+export const signOut = () => {
   getAuthenticatedUser().signOut();
+};
+
+export const verifyUser = async data => {
+  const { username, code } = data;
+  const userData = {
+    Username: username,
+    Pool: userPool,
+  };
+  const user = new CognitoUser(userData);
+
+  // Wrap AWS method in Promise so we can decide when to resolve/reject
+  const apiCall = new Promise((resolve, reject) => {
+    user.confirmRegistration(code, true, (err) => {
+      if (err) return reject('AWS Cognito error - User cannot be verified');
+
+      const data = { id: username };
+      return resolve({
+        data,
+        message: `User "${username}" has been successfully verified`
+      });
+    });
+  });
+
+  return await apiCall;
 };

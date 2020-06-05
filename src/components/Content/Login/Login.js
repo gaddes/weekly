@@ -3,8 +3,7 @@ import { createUseStyles } from 'react-jss';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 
-import { signIn, getAuthorizationHeaders } from '../../../helpers/authService';
-import { getUserData } from '../../../helpers/requests';
+import { signIn, getAuthorizationHeaders } from '../../../helpers/awsCognito';
 
 import Content from '../Content';
 import { Input } from '../../Input';

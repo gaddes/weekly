@@ -4,7 +4,8 @@ import { createUseStyles } from 'react-jss';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 
-import { signUp, verifyUser as verify, addUserToDatabase } from '../../../helpers/authService';
+import { signUp, verifyUser as verify } from '../../../helpers/awsCognito';
+import { addUserToDatabase } from '../../../helpers/awsDynamoDB';
 
 import Content from '../Content';
 import { Input } from '../../Input';
@@ -38,17 +39,15 @@ const SignUpVerification = () => {
     validationSchema: verificationSchema
   });
 
-  // TODO: should this be abstracted into its own file?
   const verifyUser = async data => {
     try {
       const verifiedUser = await verify(data);
       console.log(verifiedUser.message);
       await addUserToDatabase(verifiedUser.data);
-
-      // TODO: automatically log user in here, without forcing them to the sign-in page?
       setVerificationSuccess(true);
     } catch (err) {
       console.error(err);
+      throw new Error(err);
     }
   };
 

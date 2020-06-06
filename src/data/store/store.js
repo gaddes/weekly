@@ -1,10 +1,10 @@
 import { createStore, action } from 'easy-peasy';
 
 const storeModel = {
-  tasks: [],
+  userData: [],
 
-  setTasks: action((state, payload) => {
-    state.tasks = payload;
+  setUserData: action((state, payload) => {
+    state.userData = payload;
   }),
 };
 

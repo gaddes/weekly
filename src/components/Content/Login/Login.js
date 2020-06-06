@@ -2,8 +2,11 @@ import React, { useState } from 'react';
 import { createUseStyles } from 'react-jss';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
+import { useStoreState, useStoreActions } from 'easy-peasy';
+
 
 import { signIn, getAuthorizationHeaders } from '../../../helpers/awsCognito';
+import { getUser } from '../../../helpers/apiRequests';
 
 import Content from '../Content';
 import { Input } from '../../Input';
@@ -23,27 +26,34 @@ const Login = () => {
   const classes = useStyles();
   const [signInSuccess, setSignInSuccess] = useState(false);
 
+  // TODO: this allows us to grab user data from store, but it's not really necessary here...
+  const userData = useStoreState(state => state.userData);
+  const setUserData = useStoreActions(actions => actions.setUserData);
+
   const { register, handleSubmit, errors } = useForm({
     validationSchema: schema
   });
 
   const signInUser = async data => {
     try {
-      // Get data incl. authentication token
+      // On successful sign-in, get user data
       const result = await signIn(data);
       console.log({
         message: result.message,
         data: result.data,
       });
 
-      // TODO: see lecture 100 - add authorizer to API Gateway
-      // Use authentication token to make GET request for user data
+      // Construct headers object - this must include authentication token for current user
       const headers = getAuthorizationHeaders();
 
-      console.log('headers', headers);
-      // TODO: make GET request to retrieve user's current tasks
-      //  using Cognito authorization headers for security
+      // Query database for current user, using Cognito authorization headers for security
+      const response = await getUser(data.username, headers);
 
+      // Add user data to store model
+      setUserData(response.data);
+
+      // TODO: this should trigger page change so that user see their tasks
+      //  (which are now stored in the store model)
       setSignInSuccess(true);
     } catch (err) {
       console.error(err.message);

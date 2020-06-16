@@ -11,7 +11,7 @@ const url = 'https://ks3143j8ed.execute-api.us-east-1.amazonaws.com/dev/user';
  * @returns {object} containing data for current user
  */
 export const getUser = async (username, headers) => {
-  const requestUrl = url + '?userId=' + username;
+  const requestUrl = url + '?id=' + username;
   try {
     return await axios(requestUrl, { headers });
   } catch (err) {
@@ -19,6 +19,7 @@ export const getUser = async (username, headers) => {
   }
 };
 
+// TODO: add JSDoc for this
 // POST - create new user
 export const createUser = async payload => {
   try {
@@ -28,10 +29,11 @@ export const createUser = async payload => {
   }
 };
 
+// TODO: add JSDoc for this
 // PUT - update existing user data
-export const updateUser = async payload => {
+export const updateUser = async (payload, headers) => {
   try {
-    return await axios.put(url, payload);
+    return await axios.put(url, payload, { headers });
   } catch (err) {
     throw new Error(err);
   }

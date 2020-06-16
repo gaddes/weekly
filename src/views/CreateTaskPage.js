@@ -1,20 +1,20 @@
 import React from 'react';
 import { createUseStyles } from 'react-jss';
 
-import { Items } from '../components';
+import { CreateTask } from '../components';
 import globalStyles from '../helpers/globalStyles';
 
 const useStyles = createUseStyles(globalStyles);
 
 
-const ItemsPage = props => {
+const CreateTaskPage = props => {
   const classes = useStyles();
 
   return (
     <div className={classes.container}>
-      <Items />
+      <CreateTask />
     </div>
   );
 };
 
-export default ItemsPage;
+export default CreateTaskPage;
